@@ -8,11 +8,6 @@
 (defn select-values [map ks]
   (reduce #(conj %1 (map %2)) [] ks))
 
-(declare resolve-mutation)
-(declare render-widget)
-(declare render-widgets)
-(declare wrap-render-subwidget)
-
 ;;
 ;; Implementation
 ;;
@@ -24,6 +19,14 @@
 (defn default-view
   [_]
   "")
+
+(defn render*
+  [t]
+  (apply str (html/emit* t)))
+
+(defn- resolve-widget
+  [s]
+  (resolve (symbol (get-in s [:attrs :rel]))))
 
 (defn in?
   "true if seq contains elm"
@@ -58,14 +61,6 @@
     `(def ~(vary-meta widget-name assoc :widget true :opts opts)
        (fn [env#] (~view (~fetch env#))))))
 
-(defn render*
-  [t]
-  (apply str (html/emit* t)))
-
-(defn resolve-widget
-  [s]
-  (resolve (symbol (get-in s [:attrs :rel]))))
-
 (defn inject-core-widgets
   [html-source widgets]
   (html/flatmap
@@ -78,7 +73,6 @@
    html-source))
 
 ;; TODO Add widget cache for widgets that were already rendered in different context so that they wouldn't be re-rendered
-
 (defn interpolate-widgets
   [html-source env]
   (let [step-widgets (into {}
@@ -98,6 +92,6 @@
      html-source)))
 
 (defn require-widgets
-  []
-  (doseq [ns (bultitude/namespaces-on-classpath :prefix "clojurewerkz.eventoverse.widgets")]
+  [prefix]
+  (doseq [ns (bultitude/namespaces-on-classpath :prefix prefix)]
     (require ns)))
