@@ -1,4 +1,4 @@
-# Widgie is an effortless way to create web applications in Clojure
+# Gizmo is an effortless way to create web applications in Clojure
 
 It's a leiningen template and a combination of best Ring, Clojure
 
