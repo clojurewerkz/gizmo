@@ -1,4 +1,4 @@
-(ns clojurewerkz.widgie.widget
+(ns clojurewerkz.gizmo.widget
   (:require [net.cgrand.enlive-html :as html]
             [clojure.core.reducers :as r]
             [clojure.string :as str]

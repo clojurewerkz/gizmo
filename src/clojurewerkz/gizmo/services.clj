@@ -1,5 +1,5 @@
 (ns ^{:doc "Registerable services for flexible architectures" }
-  clojurewerkz.widgie.services)
+  clojurewerkz.gizmo.services)
 
 (defonce ^:dynamic
   ^{:doc "True by default.  If set to false, no services functions will

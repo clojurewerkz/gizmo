@@ -1,7 +1,7 @@
-(ns clojurewerkz.widgie.widget-test
+(ns clojurewerkz.gizmo.widget-test
   (:require [net.cgrand.enlive-html :as html])
   (:use clojure.test
-        clojurewerkz.widgie.widget))
+        clojurewerkz.gizmo.widget))
 
 (defwidget testwidget-1
     :view (fn [a] a)
@@ -13,7 +13,7 @@
          (render*
           (interpolate-widgets
            (html/html-snippet
-            "<div><h1>untouched <widget rel=\"clojurewerkz.widgie.widget-test/testwidget-1\"></widget></h1></div>")
+            "<div><h1>untouched <widget rel=\"clojurewerkz.gizmo.widget-test/testwidget-1\"></widget></h1></div>")
            1)))))
 
 (deftest interplolate-widgets-test-nested
@@ -22,14 +22,14 @@
     :fetch (fn [s] (str (inc s))))
 
   (defwidget testwidget-parent
-    :view (fn [_] (html/html-snippet "some <widget rel=\"clojurewerkz.widgie.widget-test/testwidget-child\"></widget>"))
+    :view (fn [_] (html/html-snippet "some <widget rel=\"clojurewerkz.gizmo.widget-test/testwidget-child\"></widget>"))
     :fetch (fn [_]))
 
   (is (= "<div><h1>untouched some 2</h1></div>"
          (render*
           (interpolate-widgets
            (html/html-snippet
-            "<div><h1>untouched <widget rel=\"clojurewerkz.widgie.widget-test/testwidget-parent\"></widget>")
+            "<div><h1>untouched <widget rel=\"clojurewerkz.gizmo.widget-test/testwidget-parent\"></widget>")
            1)))))
 
 (deftest interplolate-widgets-test-nested-parallel
@@ -46,14 +46,14 @@
              (str (inc s))))
 
   (defwidget testwidget-parent
-    :view (fn [_] (html/html-snippet "some <div><widget rel=\"clojurewerkz.widgie.widget-test/testwidget-child\"></widget></div> <div><widget rel=\"clojurewerkz.widgie.widget-test/testwidget-child-2\"></widget></div>"))
+    :view (fn [_] (html/html-snippet "some <div><widget rel=\"clojurewerkz.gizmo.widget-test/testwidget-child\"></widget></div> <div><widget rel=\"clojurewerkz.gizmo.widget-test/testwidget-child-2\"></widget></div>"))
     :fetch (fn [_]))
 
   (let [start (System/currentTimeMillis)]
     (render*
      (interpolate-widgets
       (html/html-snippet
-       "<div><h1>untouched <widget rel=\"clojurewerkz.widgie.widget-test/testwidget-parent\"></widget>")
+       "<div><h1>untouched <widget rel=\"clojurewerkz.gizmo.widget-test/testwidget-parent\"></widget>")
       1))
     (is (< (- (System/currentTimeMillis) start) 2000))))
 
@@ -69,5 +69,5 @@
            (inject-core-widgets
             (html/html-snippet
              "<div><h1>untouched <widget id=\"first-core-widget\"></widget></h1></div>")
-            {:first-core-widget 'clojurewerkz.widgie.widget-test/testwidget})
+            {:first-core-widget 'clojurewerkz.gizmo.widget-test/testwidget})
            1)))))
