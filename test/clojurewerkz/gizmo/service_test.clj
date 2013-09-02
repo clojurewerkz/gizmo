@@ -1,5 +1,4 @@
 (ns clojurewerkz.gizmo.service-test
-  (:require [net.cgrand.enlive-html :as html])
   (:use clojure.test
         clojurewerkz.gizmo.service))
 

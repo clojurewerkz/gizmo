@@ -2,10 +2,9 @@
   clojurewerkz.gizmo.service)
 
 (defonce ^:dynamic
-  ^{:doc "True by default.  If set to false, no services functions will
-   be registered defservice.  Use this to skip service creation
-    when compiling or loading code for testing purposes, usually
-   services shouldn't be started then." }
+  ^{:doc "True by default.  If set to false, no service will be registered with defservice.
+    Use this to skip service creation when compiling or loading code for testing purposes,
+    usually services shouldn't be started then." }
   *load-services* true)
 
 (defprotocol IService
