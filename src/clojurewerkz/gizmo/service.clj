@@ -41,7 +41,9 @@
      * `stop` controls stopping the service. Perform all operations to gracefully
       shutdown the service here, and stop the thread where service was initially
       executed.
-   "
+     * `config` function that retrieves configuration or configuration value that will
+      be passed to `start` function when service starts.
+  "
   [name & {:keys [start stop config alive] :or {start empty-fn
                                                 stop empty-fn
                                                 config empty-fn
@@ -74,7 +76,10 @@
            (stop! [this#]
              (when (not (alive? this#))
                (throw (RuntimeException. "Can't stop service that hasn't been started.")))
-             (~stop)))))))
+             (~stop))
+
+           (thread [_]
+             (deref start-thread#)))))))
 
 (defn all-services
   []
