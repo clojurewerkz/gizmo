@@ -61,6 +61,16 @@
     `(def ~(vary-meta widget-name assoc :widget true :opts opts)
        (fn [env#] (~view (~fetch env#))))))
 
+(defmacro layout*
+  ""
+  [source args & forms]
+  `(html/snippet* (html/html-resource ~source) ~args ~@forms))
+
+(defmacro deflayout
+  [layout-name source args & forms]
+  `(def ~(vary-meta layout-name assoc :layout true :source source)
+     (layout* ~source ~args ~@forms)))
+
 (defn inject-core-widgets
   [html-source widgets]
   (html/flatmap
@@ -95,3 +105,12 @@
   [prefix]
   (doseq [ns (bultitude/namespaces-on-classpath :prefix prefix)]
     (require ns)))
+
+(defn all-layouts
+  []
+  (->> (all-ns)
+       (map #(vals (ns-interns %)))
+       flatten
+       (filter #(:layout (meta %)))
+       (map #(vector (keyword (:name (meta %))) (var-get %)))
+       (into {})))

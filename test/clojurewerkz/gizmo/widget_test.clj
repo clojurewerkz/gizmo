@@ -36,13 +36,13 @@
   (defwidget testwidget-child
     :view (fn [a] a)
     :fetch (fn [s]
-             (Thread/sleep 1000)
+             (Thread/sleep 100)
              (str (inc (inc s)))))
 
   (defwidget testwidget-child-2
     :view (fn [a] a)
     :fetch (fn [s]
-             (Thread/sleep 1000)
+             (Thread/sleep 100)
              (str (inc s))))
 
   (defwidget testwidget-parent
@@ -55,7 +55,7 @@
       (html/html-snippet
        "<div><h1>untouched <widget rel=\"clojurewerkz.gizmo.widget-test/testwidget-parent\"></widget>")
       1))
-    (is (< (- (System/currentTimeMillis) start) 2000))))
+    (is (< (- (System/currentTimeMillis) start) 200))))
 
 
 (deftest inject-core-widgets-test
@@ -71,3 +71,8 @@
              "<div><h1>untouched <widget id=\"first-core-widget\"></widget></h1></div>")
             {:first-core-widget 'clojurewerkz.gizmo.widget-test/testwidget})
            1)))))
+
+(deftest layout-test
+  (deflayout application "templates/layouts/application.html"
+    [])
+  (is (= application (:application (all-layouts)))))
