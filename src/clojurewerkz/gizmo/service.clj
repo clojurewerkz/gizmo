@@ -64,8 +64,7 @@
                        (start-thread ~start conf#))))
 
            (alive? [_]
-             (when start-thread#
-               (~alive (deref start-thread#))))
+             (~alive (deref start-thread#)))
 
            (config [_]
              (let [conf# ~config]
