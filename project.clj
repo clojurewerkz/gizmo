@@ -14,4 +14,5 @@
 
                  [bultitude "0.2.2"]]
 
-  :source-paths ["src"])
+  :source-paths ["src"]
+  :profiles       {:dev {:resource-paths ["test/resources"]}})
