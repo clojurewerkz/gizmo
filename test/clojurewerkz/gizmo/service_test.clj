@@ -60,3 +60,17 @@
 (deftest all-services-test
   (defservice all-services-test-1)
   (is (= all-services-test-1 (:all-services-test-1 (all-services)))))
+
+(deftest defservice-double-start-test
+  (defservice defservice-test-5
+    :config {:config :config}
+    :start (fn [cfg] (Thread/sleep 1000)))
+  (start! defservice-test-5)
+  (is (thrown? RuntimeException (start! defservice-test-5))))
+
+
+(deftest defservice-stop-unstarted
+  (defservice defservice-test-6
+    :config {:config :config}
+    :start (fn [cfg] (Thread/sleep 1000)))
+  (is (thrown? RuntimeException (stop! defservice-test-6))))

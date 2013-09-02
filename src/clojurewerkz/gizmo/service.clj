@@ -24,12 +24,23 @@
     t))
 
 (defn default-alive-fn
-  [t]
-  (.isAlive t))
+  [^Thread t]
+  (when t
+    (.isAlive t)))
 
 (defmacro defservice
   "Defines a new serivice with given `name`.
 
+   You may specify `start`, `stop`, `config` and `alive` functions.
+
+     * `start` is responsible for server start. It's called in a separate thread, that
+      you can use for the service.
+     * `alive` by default is checking wether the thread that `start` function ran in is
+      still alive. You can override default behavior to provide custom service
+      availability check.
+     * `stop` controls stopping the service. Perform all operations to gracefully
+      shutdown the service here, and stop the thread where service was initially
+      executed.
    "
   [name & {:keys [start stop config alive] :or {start empty-fn
                                                 stop empty-fn
@@ -39,21 +50,20 @@
     `(def ~(vary-meta name assoc :service true :opts opts)
        (let [start-thread# (atom nil)]
          (reify IService
-           (start! [_]
-             (let [conf# ~config]
-               (reset! start-thread#
-                       (if (fn? conf#)
-                         (start-thread ~start (conf#))
-                         (start-thread ~start conf#)))))
+           (start! [this#]
+             (start! this# ~config))
 
-           (start! [_ conf#]
+           (start! [this# conf#]
+             (when (alive? this#)
+               (throw (RuntimeException. "Can't start service that was already started.")))
              (reset! start-thread#
                      (if (fn? conf#)
                        (start-thread ~start (conf#))
                        (start-thread ~start conf#))))
 
            (alive? [_]
-             (~alive (deref start-thread#)))
+             (when start-thread#
+               (~alive (deref start-thread#))))
 
            (config [_]
              (let [conf# ~config]
@@ -61,7 +71,9 @@
                  (conf#)
                  conf#)))
 
-           (stop! [_#]
+           (stop! [this#]
+             (when (not (alive? this#))
+               (throw (RuntimeException. "Can't stop service that hasn't been started.")))
              (~stop)))))))
 
 (defn all-services
