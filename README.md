@@ -29,7 +29,7 @@ TBD
 
 ## License
 
-Copyright © 2013 Oleksandr Petrov, CodeCentric AG
+Copyright © 2013 Oleksandr Petrov (CodeCentric AG), Michael Klishin
 
 Double licensed under the Eclipse Public License (the same as Clojure) or
 the Apache Public License 2.0.
