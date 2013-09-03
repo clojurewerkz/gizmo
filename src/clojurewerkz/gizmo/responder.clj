@@ -28,7 +28,7 @@
 
 (defmethod respond-with :html
   [{:keys [widgets status headers layout] :as env}]
-  (assert (> (count (widget/all-layouts)) 0) "Can't respond with :html without layouts given<")
+  (assert (> (count (widget/all-layouts)) 0) "Can't respond with :html without layouts given")
   (let [layout-template (if layout
                           (get (widget/all-layouts) layout)
                           (last (first (widget/all-layouts))))
