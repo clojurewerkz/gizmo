@@ -8,24 +8,27 @@
   *load-services* true)
 
 (defprotocol IService
-  (start! [_] [_ config-override])
-  (stop! [_])
-  (alive? [_])
-  (config [_])
-  (thread [_]))
+  (start! [service] [service config-override])
+  (stop! [service])
+  (alive? [service])
+  (config [service])
+  (state [service])
+  (reset-state [service new-state])
+  (thread [service]))
 
 (defn empty-fn [& more])
 
 (defn start-thread
-  [f conf]
-  (let [t (Thread. ^Runnable #(f conf))]
+  [start-fn serivice]
+  (let [t (Thread. ^Runnable #(start-fn serivice))]
     (.start t)
     t))
 
 (defn default-alive-fn
-  [^Thread t]
-  (when t
-    (.isAlive t)))
+  [service]
+  (let [t (thread service)]
+    (when t
+      (.isAlive t))))
 
 (defmacro defservice
   "Defines a new serivice with given `name`.
@@ -49,23 +52,19 @@
                                                 alive default-alive-fn} :as opts}]
   (when *load-services*
     `(def ~(vary-meta name assoc :service true :opts opts)
-       (let [start-thread# (atom nil)]
+       (let [start-thread#  (atom nil)
+             service-state# (atom nil)]
          (reify IService
            (start! [this#]
-             (start! this# ~config))
-
-           (start! [this# conf#]
              (when (alive? this#)
                (throw (RuntimeException. "Can't start service that was already started.")))
              (reset! start-thread#
-                     (if (fn? conf#)
-                       (start-thread ~start (conf#))
-                       (start-thread ~start conf#))))
+                     (start-thread ~start this#)))
 
-           (alive? [_]
-             (~alive (deref start-thread#)))
+           (alive? [this#]
+             (~alive this#))
 
-           (config [_]
+           (config [this#]
              (let [conf# ~config]
                (if (fn? conf#)
                  (conf#)
@@ -74,7 +73,13 @@
            (stop! [this#]
              (when (not (alive? this#))
                (throw (RuntimeException. "Can't stop service that hasn't been started.")))
-             (~stop))
+             (~stop this#))
+
+           (state [_]
+             (deref service-state#))
+
+           (reset-state [this# new-state#]
+             (reset! service-state# new-state#))
 
            (thread [_]
              (deref start-thread#)))))))
