@@ -1,4 +1,5 @@
-(ns clojurewerkz.gizmo.config
+(ns ^{:doc "Application configuration settings helper functions." }
+  clojurewerkz.gizmo.config
   (:import [java.io File]))
 
 ;;
@@ -22,5 +23,6 @@
   (load-from [s] (load-from (File. s))))
 
 (defn load-config!
+  "Load config to `settings` variable. Usually called during server startup."
   [f]
   (def settings (load-from f)))

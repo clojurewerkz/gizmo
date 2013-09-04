@@ -1,4 +1,6 @@
-(ns ^{:doc "Registerable services for flexible architectures" }
+(ns ^{:doc "Registerable services for flexible architectures. Services are usually defined in
+a cooperative manner, you can check out UDP server for details on how to implement a cooperative
+service. " }
   clojurewerkz.gizmo.service)
 
 (defonce ^:dynamic
@@ -8,12 +10,12 @@
   *load-services* true)
 
 (defprotocol IService
-  (start! [service] [service config-override])
-  (stop! [service])
-  (alive? [service])
-  (config [service])
-  (state [service])
-  (reset-state [service new-state])
+  (start! [service] "Start service")
+  (stop! [service] "Stop service")
+  (alive? [service] "Checks wether service is still alive or no.")
+  (config [service] "Returns service configuration")
+  (state [service] "Get current service state.")
+  (reset-state [service new-state] "Update service state by setting `new-state`.")
   (thread [service]))
 
 (defn empty-fn [& more])
@@ -36,13 +38,22 @@
    You may specify `start`, `stop`, `config` and `alive` functions.
 
      * `start` is responsible for server start. It's called in a separate thread, that
-      you can use for the service.
+      you can use for the service. It is usually a either long-running function that blocks
+      thread execution and creates an internal endless loop, or fires up a timer or another
+      control thread. Function receives `service` instance, that you can use
+      to obtain and update service state. Stop function usually notifies `start` about
+      the fact that service should be started in cooperative manner, through service
+      state.
+
      * `alive` by default is checking wether the thread that `start` function ran in is
       still alive. You can override default behavior to provide custom service
-      availability check.
+      availability check. You can use service state in `start` and `stop` functions in
+      to control execution flow.
+
      * `stop` controls stopping the service. Perform all operations to gracefully
       shutdown the service here, and stop the thread where service was initially
-      executed.
+      executed. Make sure that stopping service shutdowns the thread it's been running in.
+
      * `config` function that retrieves configuration or configuration value that will
       be passed to `start` function when service starts.
   "
@@ -85,6 +96,7 @@
              (deref start-thread#)))))))
 
 (defn all-services
+  "Returns all services registered in all namespaces"
   []
   (->> (all-ns)
        (map #(vals (ns-interns %)))
@@ -94,11 +106,13 @@
        (into {})))
 
 (defn start-all!
+  "Starts all services registered in all namespaces"
   []
   (doseq [service (all-services)]
     (start! service)))
 
 (defn stop-all!
+  "Stops all serivces registered in all namespaces"
   []
   (doseq [service (all-services)]
     (stop! service)))
