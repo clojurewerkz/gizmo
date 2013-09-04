@@ -6,13 +6,15 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [enlive "1.1.4"]
                  [cheshire "5.0.2"]
-                 [clojurewerkz/route-one "1.0.0-rc1"]
+                 [clojurewerkz/route-one "1.0.0-rc2"]
 
                  [ring/ring "1.2.0"]
                  [ring/ring-devel "1.2.0"]
                  [compojure "1.1.5"]
 
-                 [bultitude "0.2.2"]]
+                 [bultitude "0.2.2"]
+
+                 ]
 
   :source-paths ["src"]
   :profiles       {:dev {:resource-paths ["test/resources"]}})
