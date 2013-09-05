@@ -1,5 +1,6 @@
 (ns clojurewerkz.gizmo.core
-  (:require [bultitude.core :as bultitude]))
+  (:require [net.cgrand.reload :as enlive-reload]
+            [bultitude.core :as bultitude]))
 
 (defn- require-all
   [prefix]
@@ -21,3 +22,8 @@
 (defn require-services
   [^String app]
   (require-all (str app ".services")))
+
+(defn register-snippet-reload
+  [name]
+  (doseq [ns (bultitude/namespaces-on-classpath :prefix (str name ".snippets"))]
+    (enlive-reload/auto-reload (find-ns ns))))
