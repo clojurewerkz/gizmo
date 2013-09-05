@@ -101,11 +101,6 @@
                       view))))
      html-source)))
 
-(defn require-widgets
-  [prefix]
-  (doseq [ns (bultitude/namespaces-on-classpath :prefix prefix)]
-    (require ns)))
-
 (defn all-layouts
   []
   (->> (all-ns)
