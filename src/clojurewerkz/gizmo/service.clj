@@ -108,11 +108,11 @@ service. " }
 (defn start-all!
   "Starts all services registered in all namespaces"
   []
-  (doseq [service (all-services)]
+  (doseq [[_ service] (all-services)]
     (start! service)))
 
 (defn stop-all!
   "Stops all serivces registered in all namespaces"
   []
-  (doseq [service (all-services)]
+  (doseq [[_ service] (all-services)]
     (stop! service)))
