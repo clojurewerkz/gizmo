@@ -37,23 +37,6 @@
 ;; API
 ;;
 
-(defmacro defselector
-  ^{:doc "Defining a selector and helper functions for it, for example:
-
-    (utils/defselector product-list-item [[:article.article html/first-of-type]])
-
-    Generates a def that you can use whenever you refer that selector:
-     (clojure.core/defonce *product-list-item [[:article.article html/first-of-type]])
-
-    And a selection helper, you should pass html-source into it and it will return a desired element, that you can use in your tests
-
-      (defn select-product-list-item
-       [source]
-       (html/select source [[:article.article html/first-of-type]]))"}
-  [name value]
-  `(do (def ~(symbol (format "*%s" name)) ~value)
-       (defn ~(symbol (format "select-%s" name)) [source#] (html/select source# ~value))))
-
 (defmacro defwidget
   [widget-name &{:keys [fetch view] :or {fetch         default-fetch
                                          view          default-view}}]
