@@ -1,8 +1,8 @@
 (ns clojurewerkz.gizmo.enlive-test
-  (:require [net.cgrand.enlive-html :as html])
+  (:require [net.cgrand.enlive-html :as html]
+            [clojurewerkz.gizmo.enlive :refer [defsnippet]])
   (:use clojure.test
-        clojurewerkz.gizmo.widget
-        clojurewerkz.gizmo.enlive))
+        clojurewerkz.gizmo.widget))
 
 (deftest defsnippet-test
   (defsnippet defsnippet-test-snippet-1 "templates/snippets/sniptest.html"

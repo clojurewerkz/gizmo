@@ -42,6 +42,6 @@
  (let [snippets (html/select (html/html-resource source) [(has-attr :snippet)])
        names    (apply concat (map #(vector
                                      (-> % :attrs :snippet format-selector symbol)
-                                     (list 'snip (-> % :attrs :snippet))) snippets))]
+                                     (list 'clojurewerkz.gizmo.enlive/snip (-> % :attrs :snippet))) snippets))]
    `(let* [~@names]
           (def ~name (html/snippet ~source ~selector ~args ~@forms)))))
