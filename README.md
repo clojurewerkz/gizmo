@@ -19,6 +19,8 @@ re-implement their features.
   * Give you set of building blocks to bring you up to speed as fast as possible
   * Leave infinite flexibility in terms of all configuration and composition
     decisions
+  * Help you to establish reasonable convention on where to put what (handlers,
+    services, routes, HTML, CSS, and so on)
   * Be well documented
   * Be well tested
 
