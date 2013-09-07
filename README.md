@@ -33,13 +33,6 @@ Principles that are represented in Gizmo are battle-tested and proven to work ve
 on large Clojure web applications, however Gizmo as a library is very young and there
 may be breaking API changes until stable release.
 
-## Community
-
-Gizmo does not yet have it's own mailing list. This will be resolved as soon as first
-artifacts are pushed to Clojars.
-
-To subscribe for announcements of releases, important changes and so on, please follow
-[@ClojureWerkz](https://twitter.com/clojurewerkz) on Twitter.
 
 ## Documentation
 
@@ -384,6 +377,18 @@ to generate Gizmo application skeletons.
 
 Reference applicaiton that demonstrates core priniples of web development with Gizmo can be found
 [here](https://github.com/ifesdjeen/gizmo-cloc).
+
+
+
+## Community
+
+Gizmo does not yet have it's own mailing list. This will be resolved as soon as first
+artifacts are pushed to Clojars.
+
+To subscribe for announcements of releases, important changes and so on, please follow
+[@ClojureWerkz](https://twitter.com/clojurewerkz) on Twitter.
+
+
 
 ## Development
 
