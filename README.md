@@ -38,17 +38,19 @@ may be breaking API changes until stable release.
 
 ### Request Lifecycle
 
-When HTTP request is coming to your application, it's received by Jetty webserver and
-pushed into middleware stack. Middlewares add required entries (such as session,
-cookies, route params, authentication tokens) to request hash and hand it over to
-routing function, which figures out which handler the request should be routed to.
+Incoming HTTP requests are handled by Jetty and processed through a
+middleware stack. Middleware implements session handling, cookies,
+route parameters extraction, authentication, etc. A middleware takes a
+request hash hands it over to the routing function, which figures out
+which handler the request should be routed to.
 
-Handler is preparing the response and gives all required information about HTTP
-response code, response body and type and hands it to responder. Depending on
-response type chosen, one of renderers is called (for exmaple, HTML or JSON).
+Handler prepares the response and returns HTTP response code, response
+body and content type and hands it over to responder. Depending on
+response content type, an appropriate renderer is invoked (for
+exmaple, HTML or JSON).
 
-Rendrerer renders a complete response body and gives resulting hash back to Jetty,
-so that it could be returned to requester.
+Rendrerer renders a complete response body and returns the result
+back to Jetty, which sends it back to the client.
 
 ### Request, Response and Environment
 
