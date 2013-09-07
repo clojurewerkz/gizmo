@@ -27,13 +27,13 @@ re-implement their features.
   * Be well documented
   * Be well tested
 
-# Project Maturity
+## Project Maturity
 
 Principles that are represented in Gizmo are battle-tested and proven to work very well
 on large Clojure web applications, however Gizmo as a library is very young and there
 may be breaking API changes until stable release.
 
-# Community
+## Community
 
 Gizmo does not yet have it's own mailing list. This will be resolved as soon as first
 artifacts are pushed to Clojars.
@@ -41,9 +41,9 @@ artifacts are pushed to Clojars.
 To subscribe for announcements of releases, important changes and so on, please follow
 [@ClojureWerkz](https://twitter.com/clojurewerkz) on Twitter.
 
-# Documentation
+## Documentation
 
-## Request Lifecycle
+### Request Lifecycle
 
 When HTTP request is coming to your application, it's received by Jetty webserver and
 pushed into middleware stack. Middlewares add required entries (such as session,
@@ -57,7 +57,7 @@ response type chosen, one of renderers is called (for exmaple, HTML or JSON).
 Rendrerer renders a complete response body and gives resulting hash back to Jetty,
 so that it could be returned to requester.
 
-## Request, Response and Environment
+### Request, Response and Environment
 
 Even though Request, Response and Environment are pretty much same thing, just
 on different steps of processing, we decided to make the separation of these
@@ -82,7 +82,7 @@ pass required parts of request to all functions explicitly. Although it's
 hard to draw a boundary where it is acceptable, just keep in mind that it will
 make your code less explicit and testable.
 
-## Middleware
+### Middleware
 
 Middleware is a function that receives a request and modifies it in some way.
 Middleware can either stop execution itself and return result or pass it
@@ -148,9 +148,9 @@ and so on.
 
 You can use generated routes by adding `-path` postfix for paths and `-url`
 postfix for URLs. You can find in-depth documentation for route parsing
-and generation in [route-one](https://github.com/clojurewerkz/route-one).
+and generation in [Route One](https://github.com/clojurewerkz/route-one).
 
-## Handlers
+### Handlers
 
 Handler is reponsible for the incoming request for particular URL. Handler
 is called if routing found that request URL matched route for it. Handler
@@ -183,7 +183,7 @@ Since most of things related to `json` responses are more or less straightforwar
 it's a bit different, since we provide you with several concepts that help you
 to build modular web applications, and widgets are a big part of it.
 
-## Layouts
+### Layouts
 
 Layout is a high-level template that's shared between several pages on your
 website. Usually it's a set of common surroundings of an HTML page.
@@ -214,7 +214,7 @@ In order to specify layout use `layout` key in your handler return hash:
    :layout :application-layout})
 ```
 
-## Widgets
+### Widgets
 
 Widget is a reusable entry that represents any part of your website. Examples
 include things like header, login form, user profile, or even a complete page
@@ -264,7 +264,7 @@ in parallel. It does not apply for nested widgets, since in that case parent wid
 should be rendered first, but after parent widget is rendered, it's nested widgets
 will be also fetched and rendered in parallel.
 
-## Snippets
+### Snippets
 
 Snippet usually `view` part of widget, or a part of HTML code that should be rendered
 within some other snippet.
@@ -321,7 +321,7 @@ to HTML:
 `replace-vars` will take care of argument interpolation, `clone-for` will take list of
 libraries and create a `libraries-list-item` for each one of them.
 
-## Services
+### Services
 
 Services are used to give you flexibility of creating a long-running processes within your
 application. Typical examples are `jetty` webserver and `nrepl` server that are used in
@@ -369,7 +369,7 @@ You can start it with
 You can check [nrepl service example here](https://github.com/clojurewerkz/gizmo/blob/master/examples/services/nrepl_service.clj)
 and more complex example of cooperative [UDP socket listener here](https://github.com/clojurewerkz/gizmo/blob/master/examples/services/udp_service.clj).
 
-## Configuration
+### Configuration
 
 Configuration file is loaded by `clojurewerkz.gizmo.config/load-config!`, which receives
 a path to configuration file and loads it to `clojurewerkz.gizmo.config/settings` variable,
@@ -377,24 +377,25 @@ that's available at all times.
 
 ### Leiningen project templates
 
-Gizmo Leiningen project template is available [here](https://github.com/ifesdjeen/gizmo-web-template).
+You can use [Gizmo Leiningen project template](https://github.com/ifesdjeen/gizmo-web-template)
+to generate Gizmo application skeletons.
 
 ### Example applications
 
 Reference applicaiton that demonstrates core priniples of web development with Gizmo can be found
 [here](https://github.com/ifesdjeen/gizmo-cloc).
 
-# Development
+## Development
 
-Gizmo uses Leiningen 2. Make sure you have it installed and then run tests against supported Clojure
-versions using
+Gizmo uses [Leiningen 2](http://leiningen.org). Make sure you have it installed and then run
+tests against supported Clojure versions using
 
 ```
 lein all test
 ```
 
-Then create a branch and make your changes on it. Once you are done with your changes and all tests pass,
-submit a pull request on GitHub.
+Then create a branch and make your changes on it. Once you are done
+with your changes and all tests pass, submit a pull request on GitHub.
 
 ## License
 
