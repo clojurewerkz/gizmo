@@ -94,9 +94,9 @@ make your code less explicit and testable.
 
 ### Middleware
 
-Middleware is a function that receives a request and modifies it in some way.
-Middleware can either stop execution itself and return result or pass it
-to the next middleware.
+A middleware is a function that receives a request and modifies it.
+Middleware can terminate execution of request processing or return a result, or pass the
+request on to the next middleware.
 
 Here's what middleware looks like:
 
@@ -109,14 +109,14 @@ Here's what middleware looks like:
       {:status 401 :body "Unauthorized"})))
 ```
 
-You can see that there're two execution paths here: if user is authenticated,
-the underlying handler is called, so middleware stack execution is continued,
-otherwise middleware returns 401 Unauthorized response and prevents further
-execution of the stack.
+There are two execution paths here: if the user is authenticated,
+a request handler is called, so request processing is continued,
+otherwise middleware returns `401 Unauthorized` response and halt further
+request processing.
 
-In order to create a middleware stack, you thread the handler through set of
-middlewares, wrapping handler into the middleware, then wrapping resulting
-stack into another middleware function and so on.
+In order to create a middleware stack, you thread the handler through
+set of middlewares, wrapping handler into the middleware, then
+wrapping resulting stack into another middleware function and so on.
 
 ```clj
 (ns my-app.core
@@ -130,7 +130,9 @@ stack into another middleware function and so on.
 
 ## Routing
 
-Routing recognizes URLs and dispatches them to particular handler. It also
+Routing in Gizmo is built upon Compojure and [Route One](https://github.com/clojurewerkz/route-one).
+
+Routing recognizes URLs and dispatches them to a suitable handler. It also
 generates helper functions for creating Paths and URLs so that you wouldn't
 need to hardcode them and could specify them once for both parsing and
 generation purposes.
@@ -139,7 +141,7 @@ Following code defines routes for a simple application that's showing you
 docstrings of all the libraries in your Clojure classpath.
 
 Root path "/" is handled by `main/index` handler function.
-Library path "/libs/:library" is handled by `main/library-show` handler function,
+Library path "/libs/:library" is handled by `main/library-show`,
 and so on.
 
 ```clj
