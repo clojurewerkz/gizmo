@@ -51,7 +51,7 @@ a number of middlewares, a handler (picked by the router) and a responder.
 Gizmo separates UI elements from HTTP request handling, and request
 handling logic from serving the response.
 
-### Request Lifecycle
+### HTTP Request Lifecycle
 
 Incoming HTTP requests are handled by Jetty and processed through a
 middleware stack. Middleware implements session handling, cookies,
