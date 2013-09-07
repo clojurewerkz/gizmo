@@ -198,7 +198,7 @@ to build modular Web applications.
 
 ### Layouts
 
-Layout is a high-level template that's shared between several pages on your
+Layout is a outlining template that's shared between several pages on your
 website. Usually it's a set of common surroundings of an HTML page.
 
 ```clj
@@ -209,9 +209,6 @@ website. Usually it's a set of common surroundings of an HTML page.
 (deflayout application-layout "templates/layouts/application.html"
   [])
 ```
-
-You can have any valid HTML code in your `application.html`. This part is totally
-up to you.
 
 First defined layout will become a default layout for your application. If you
 have more than one layout, we stronly recommend you to specify layout explicitly
