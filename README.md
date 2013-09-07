@@ -29,12 +29,27 @@ re-implement their features.
 
 ## Project Maturity
 
-Principles that are represented in Gizmo are battle-tested and proven to work very well
-on large Clojure web applications, however Gizmo as a library is very young and there
-may be breaking API changes until stable release.
+Principles that are represented in Gizmo are battle-tested and proven
+to work very well for large Clojure Web applications. Gizmo as a
+library is very young and breaking API changes currently can happen at
+any point without prior notice.
 
 
 ## Documentation
+
+### Intro
+
+Gizmo is a collection of good practices that ties multiple Clojure Web
+development libraries and a few concepts together (similar to
+DropWizard in Java, although slighly more opinionated).
+
+With Gizmo, you build HTTP apps as one or more *services*, each of which can
+be started, stopped and performed a health check on. Request handling
+is implemented as a pipeline, which starts with a Ring request, includes
+a number of middlewares, a handler (picked by the router) and a responder.
+
+Gizmo separates UI elements from HTTP request handling, and request
+handling logic from serving the response.
 
 ### Request Lifecycle
 
@@ -54,21 +69,21 @@ back to Jetty, which sends it back to the client.
 
 ### Request, Response and Environment
 
-Even though Request, Response and Environment are pretty much same thing, just
-on different steps of processing, we decided to make the separation of these
-concepts to be able to communicate it in a better way.
+Even though Request, Response and Environment are closely related to each other,
+Gizmo separates these concepts.
 
-`request` is an initial request from the browser (or API client, if you wish),
-which contains information about Referrer, User Agent, called URI, Path. Everything
-that's related to the normal HTTP request.
+`request` is an initial request from a HTTP client,
+which contains information about the referrer, user agent, path and so on.
 
-`environment` is request, processed and refined by middleware stack and handler.
+`environment` is request that has been processed and refined by
+the middleware stack and request handler.
 
-It becomes `response` after it went through middlewares, handler and renderer
-and is ready to be returned back to the client.
+`environment` becomes `response` after it has been through the
+middleware, handler and renderer and is ready to be returned back to
+the client.
 
-These terms are more or less interchangeable, but you can use them to specify
-which part of processing you're referring to.
+With this separation, you can refer to a
+specific part of request processing pipeline.
 
 In all parts of your application, you can always refer to current (immutable)
 state of request by calling `clojurewerkz.gizmo.request/request` function.
