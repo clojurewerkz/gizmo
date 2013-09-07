@@ -1,16 +1,19 @@
-# Gizmo is an effortless way to create web applications in Clojure
+# What is Gizmo
 
-Gizmo is a set of practices we've accumulated during developing several web applications
-with Clojure. It's a mirco-MVC framework, which lets you develop parts of your app
-in an absolutely independent, which improves composition and allows you effortlessly
+Gizmo is an effortless way to create web applications in Clojure.
+
+Gizmo is a set of practices we've accumulated from several Web
+applications and API's developed with Clojure. It's a MVC
+microframework, which lets you develop parts of your app in completely
+independently, which improves composition and allows you effortlessly
 implement things like A/B testing, gradual feature rollouts.
 
-Since Gizmo's using Enlive under the hood, you are able to let your front-end team to
-work on HTML, CSS and JavaScript without interferring with web development team, but
+Gizmo uses Enlive under the hood, so you will be able to let your front-end team to
+work on HTML, CSS and JavaScript without interferring with Web development team, but
 also provides means for making sure their accidental changes (e.g. moved or deleted
 HTML entries) do not break application code.
 
-# Project Goals
+## Project Goals
 
 Gizmo is not a replacement for Ring or Compojure. It's based on them, and doesn't
 re-implement their features.
