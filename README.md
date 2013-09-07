@@ -266,16 +266,16 @@ caching off, too.
             :docs         (entities/docs library-name namespace)}))
 ```
 
-Here, hash from `my-handler` is passed straight to `fetch` function of the widget,
-and it's performing a query to retrieve all docstrings for namespace of some library.
+Here, a hash from `my-handler` is passed straight to `fetch` function of the widget,
+and it's performing a query to retrieve all docstrings for namespace of a library.
 Once again, `fetch` operations of widgets that are found on the page are done
-in parallel. It does not apply for nested widgets, since in that case parent widget
+in parallel. It does not apply to nested widgets, since in that case parent widget
 should be rendered first, but after parent widget is rendered, it's nested widgets
 will be also fetched and rendered in parallel.
 
 ### Snippets
 
-Snippet usually `view` part of widget, or a part of HTML code that should be rendered
+A snippet is the `view` part of a widget, or a part of HTML code that should be rendered
 within some other snippet.
 
 For example, here's an HTML snippet for rendering a list of libraries in your
