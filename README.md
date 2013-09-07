@@ -164,15 +164,15 @@ and generation in [Route One](https://github.com/clojurewerkz/route-one).
 
 ### Handlers
 
-Handler is reponsible for the incoming request for particular URL. Handler
-is called if routing found that request URL matched route for it. Handler
-receives an Environment, that's been processed by middleware stack
-and returns a hash that's passed to responder.
+A handler is a function reponsible for requests matching a particular
+URL pattern. Handler take an *environment*, a request that's been
+processed by middleware stack, and returns a hash that's passed to
+a responder.
 
 You can have full control over response params in `response`. For example,
 you can specify `status`, `headers` and so on. In order to specify
-type of your response, you add `render` with value of `html` or `json`
-(which are built-in renderers), for example:
+type of your response, set `:render` key to either `"html"` or `"json"`
+(two built-in renderers), for example:
 
 ```clj
 ;; Render :response-hash and return it as JSON response
@@ -190,10 +190,11 @@ type of your response, you add `render` with value of `html` or `json`
    :widgets {:main-content gizmo-cloc.widgets.home/index-content}))
 ```
 
-Since most of things related to `json` responses are more or less straightforward
-(you specify response-hash and it's returned straight to caller), with `html`
-it's a bit different, since we provide you with several concepts that help you
-to build modular web applications, and widgets are a big part of it.
+JSON rendering in Gizmo is just what you expect it to be: you return a map,
+it is serialized into JSON and returned to Jetty.
+
+HTML rendering it's a bit more involved and includes a few concepts that help you
+to build modular Web applications.
 
 ### Layouts
 
