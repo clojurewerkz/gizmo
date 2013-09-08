@@ -34,6 +34,21 @@ to work very well for large Clojure Web applications. Gizmo as a
 library is very young and breaking API changes currently can happen at
 any point without prior notice.
 
+## Maven Artifacts
+
+### Most Recent Release
+
+With Leiningen:
+
+    [clojurewerkz/gizmo "1.0.0-alpha1"]
+
+With Maven:
+
+    <dependency>
+      <groupId>clojurewerkz</groupId>
+      <artifactId>eep</artifactId>
+      <version>1.0.0-alpha1</version>
+    </dependency>
 
 ## Documentation
 

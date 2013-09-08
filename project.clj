@@ -1,4 +1,4 @@
-(defproject clojurewerkz/gizmo "0.1.0-SNAPSHOT"
+(defproject clojurewerkz/gizmo "1.0.0-alpha1"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
@@ -12,9 +12,7 @@
                  [ring/ring-devel "1.2.0"]
                  [compojure "1.1.5"]
 
-                 [bultitude "0.2.2"]
-
-                 ]
+                 [bultitude "0.2.2"]]
 
   :source-paths ["src"]
   :profiles       {:dev {:resource-paths ["test/resources"]}})
