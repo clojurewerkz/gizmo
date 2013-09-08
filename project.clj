@@ -1,4 +1,4 @@
-(defproject clojurewerkz/gizmo "1.0.0-alpha1"
+(defproject clojurewerkz/gizmo "1.0.0-alpha2-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
