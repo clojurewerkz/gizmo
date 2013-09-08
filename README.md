@@ -404,6 +404,13 @@ that's available at all times.
 You can use [Gizmo Leiningen project template](https://github.com/ifesdjeen/gizmo-web-template)
 to generate Gizmo application skeletons.
 
+You can get up and running with it by creating a new template and running it:
+```
+lein new gizmo-web my-app
+cd my-app
+lein run --config config/development.clj
+```
+
 ### Example applications
 
 Reference applicaiton that demonstrates core priniples of web development with Gizmo can be found
