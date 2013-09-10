@@ -211,6 +211,21 @@ it is serialized into JSON and returned to Jetty.
 HTML rendering it's a bit more involved and includes a few concepts that help you
 to build modular Web applications.
 
+### Responders
+
+In order to implement a custom, use multimethods extending `respond-with`. For example,
+if you want to add an XML responder, you can write:
+
+```clj
+(ns my-app
+  (:require [clojurewerkz.gizmo.responder :refer [respond-with]])
+
+(defmethod respond-with :xml
+  [env]
+  {:status 200
+   :body (xml/serialize (:response-hash env))})
+```
+
 ### Layouts
 
 Layout is a outlining template that's shared between several pages on your
