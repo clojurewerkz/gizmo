@@ -26,7 +26,10 @@
 
 (defn- resolve-widget
   [s]
-  (resolve (symbol (get-in s [:attrs :rel]))))
+  (assert (get-in s [:attrs :rel]) "Can't resolve widget name. If it's an top-level widget, please add {:widgets ...} clause to your responder, otherwise add `rel` attribute to widget for proper resolution.")
+  (if-let [widget (resolve (symbol (get-in s [:attrs :rel])))]
+    widget
+    (throw (Exception. (str "Can't resolve widget " s ". " (get-in s [:attrs :rel]) " is not found")))))
 
 (defn in?
   "true if seq contains elm"
