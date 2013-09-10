@@ -85,3 +85,11 @@
 
 </html>" (:body res)))
     (is (= 200 (get-in res [:status])))))
+
+(deftest custom-responder
+  (defmethod respond-with :whatev
+    [env]
+    {:status 200
+     :body "whatev"})
+
+  (is (= {:status 200 :body "whatev"} (respond-with {:render :whatev}))))

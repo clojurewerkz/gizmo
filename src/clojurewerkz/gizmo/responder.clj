@@ -10,8 +10,10 @@
   [nodes]
   (apply str (html/emit* nodes)))
 
-(defmulti respond-with (fn [{:keys [render] :or {:render :html}}]
-                         render))
+(defmulti respond-with (fn [response]
+                         (assert (map? response)
+                                 "Can't render response since it's not map. Please use handler returns in form of {:render :html ... }.")
+                         (or (:render response) :json)))
 
 (defmethod respond-with :nothing
   [env]
