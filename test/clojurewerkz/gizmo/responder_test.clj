@@ -1,8 +1,8 @@
 (ns clojurewerkz.gizmo.responder-test
-  (:use clojure.test
-        clojurewerkz.gizmo.responder
-        clojurewerkz.gizmo.widget
-        clojurewerkz.gizmo.request))
+  (:require [clojure.test :refer [deftest is testing]]
+            [clojurewerkz.gizmo.responder :refer [respond-with wrap-responder]]
+            [clojurewerkz.gizmo.widget :refer [defwidget deflayout]]
+            [clojurewerkz.gizmo.request :refer [request]]))
 
 (deftest respond-with-html
   (deflayout respond-with-html-layout "templates/layouts/application.html" [])
