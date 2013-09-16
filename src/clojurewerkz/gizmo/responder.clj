@@ -1,14 +1,12 @@
 (ns clojurewerkz.gizmo.responder
+  "Main responders namespace, used by Gizmo internally. Responders help to create a shortcuts
+   for responding with certain content type."
   (:require [clojurewerkz.gizmo.widget :as widget]
             [clojurewerkz.gizmo.request :as request]
             [clojurewerkz.gizmo.utils.hash-utils :as hash-utils]
 
             [cheshire.core :as json]
             [net.cgrand.enlive-html :as html]))
-
-(defn render
-  [nodes]
-  (apply str (html/emit* nodes)))
 
 (defmulti respond-with (fn [response]
                          (assert (map? response)
@@ -35,11 +33,10 @@
                           (get (widget/all-layouts) layout)
                           (last (first (widget/all-layouts))))
         response        (request/with-request env
-                          (render
-                           (widget/interpolate-widgets
-                            (widget/inject-core-widgets (layout-template)
-                                                        (:widgets env))
-                            env)))]
+                          (-> (layout-template)
+                              (widget/inject-core-widgets (:widgets env))
+                              (widget/interpolate-widgets env)
+                              widget/render*))]
     {:headers (merge headers
                      {"content-type"  "text/html; charset=utf-8"
                       "content-length" (str (count response))})
@@ -47,6 +44,7 @@
      :body response}))
 
 (defn wrap-responder
+  "Responder middleware, shuold be always inserted as a last middleware after routing/handler."
   [handler]
   (fn [env]
     (let [handler-env  (handler env)
