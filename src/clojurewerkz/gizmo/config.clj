@@ -1,5 +1,5 @@
-(ns ^{:doc "Application configuration settings helper functions." }
-  clojurewerkz.gizmo.config
+(ns clojurewerkz.gizmo.config
+  "Application configuration settings helper functions."
   (:import [java.io File]))
 
 ;;

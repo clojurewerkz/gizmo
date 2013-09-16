@@ -1,4 +1,5 @@
-(ns clojurewerkz.gizmo.utils.hash-utils)
+(ns clojurewerkz.gizmo.utils.hash-utils
+  "Utility functions")
 
 (defn deep-merge-with
   "Deep merge, taken from: https://github.com/richhickey/clojure-contrib/blob/2ede388a9267d175bfaa7781ee9d57532eb4f20f/src/main/clojure/clojure/contrib/map_utils.clj"

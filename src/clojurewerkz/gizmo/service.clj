@@ -16,17 +16,19 @@ service. " }
   (config [service] "Returns service configuration")
   (state [service] "Get current service state.")
   (reset-state [service new-state] "Update service state by setting `new-state`.")
-  (thread [service]))
+  (thread [service] "Returns a thread current service was created on"))
 
 (defn empty-fn [& more])
 
 (defn start-thread
+  "Starts service in a separate thread"
   [start-fn serivice]
   (let [t (Thread. ^Runnable #(start-fn serivice))]
     (.start t)
     t))
 
 (defn default-alive-fn
+  "Default predicate that checks wether the thread of current service is alive or no."
   [service]
   (let [t (thread service)]
     (when t

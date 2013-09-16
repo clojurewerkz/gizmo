@@ -1,23 +1,40 @@
 (ns clojurewerkz.gizmo.enlive
+  "Enlive helper functions and extensions"
   (:require [net.cgrand.enlive-html :as html]))
 
+(defn- format-selector
+  [name]
+  (format "*%s" name))
+
+;;
+;; API
+;;
+
 (defn within
+  "Selector helper to that specifies that certain selector is located within the other one,
+   for example:
+
+     (within :ul [:li html/first-of-type])
+
+   Queries for first li element located within ul element."
   [parent & children]
   (if (sequential? parent)
     (apply conj parent children)
     (apply conj [parent] children)))
 
 (defn has-attr
- [attr]
- (html/pred #(not (nil? (-> % :attrs attr)))))
+  "Predicare function that fetches only the elements that have certain attribute, for example:
+
+      (has-attr :id)
+
+   Will only return elements that have an `id` attribute"
+  [attr]
+  (html/pred #(not (nil? (-> % :attrs attr)))))
 
 (defn snip
+  "Predicate function to retrieve all snippets from the view"
   [snippet-name]
   (html/pred #(= snippet-name (-> % :attrs :snippet))))
-
-(defn format-selector
-  [name]
-  (format "*%s" name))
 
 (defmacro defselector
   ^{:doc "Defining a selector and helper functions for it, for example:
@@ -37,7 +54,10 @@
        (defn ~(symbol (format "select-%s" name)) [source#] (html/select source# ~value))))
 
 (defmacro defsnippet
- "Define a named snippet with enclosed selectors"
+  "Define a named snippet with enclosed selectors. Will query `source` for the elements
+   that have `snippet` attribute and turn values of `snippet` attribute into selectors,
+   for example, if you have `<div snippet='main_content'></div>`, you'll have main_content*
+   selector available within the scope of snippet definition."
  [name source selector args & forms]
  (let [snippets (html/select (html/html-resource source) [(has-attr :snippet)])
        names    (apply concat (map #(vector

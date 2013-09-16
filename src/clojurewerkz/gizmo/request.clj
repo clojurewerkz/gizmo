@@ -1,4 +1,5 @@
 (ns clojurewerkz.gizmo.request
+  "Request helpers, makes `request` environment globally available during the call"
   (:require [net.cgrand.enlive-html :as html]))
 
 (declare ^{:dynamic true} *request*)
