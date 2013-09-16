@@ -23,8 +23,8 @@
   [env]
   (let [response (json/generate-string (or (:response-hash env) {}))]
     {:headers (merge (:headers env)
-                     {"Content-Type"  "application/json; charset=utf-8"
-                      "Content-Length" (str (count response))})
+                     {"content-type"  "application/json; charset=utf-8"
+                      "content-length" (str (count response))})
      :status (or (:status env) 200)
      :body response}))
 
@@ -41,8 +41,8 @@
                                                         (:widgets env))
                             env)))]
     {:headers (merge headers
-                     {"Content-Type"  "text/html; charset=utf-8"
-                      "Content-Length" (str (count response))})
+                     {"content-type"  "text/html; charset=utf-8"
+                      "content-length" (str (count response))})
      :status (or status 200)
      :body response}))
 

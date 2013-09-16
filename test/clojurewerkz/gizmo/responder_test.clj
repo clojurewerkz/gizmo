@@ -12,8 +12,8 @@
   (let [res (respond-with {:render  :html
                            :widgets {:content 'clojurewerkz.gizmo.responder-test/respond-with-html-content-widget
                                      :header 'clojurewerkz.gizmo.responder-test/respond-with-html-header-widget}})]
-    (is (= "173" (get-in res [:headers "Content-Length"])))
-    (is (= "text/html; charset=utf-8" (get-in res [:headers "Content-Type"])))
+    (is (= "173" (get-in res [:headers "content-length"])))
+    (is (= "text/html; charset=utf-8" (get-in res [:headers "content-type"])))
     (is (= "<!DOCTYPE html>
 <html lang=\"en\">
   <head>
@@ -32,8 +32,8 @@
 (deftest respond-with-json
   (let [res (respond-with {:render        :json
                            :response-hash {:response :hash}})]
-    (is (= "19" (get-in res [:headers "Content-Length"])))
-    (is (= "application/json; charset=utf-8" (get-in res [:headers "Content-Type"])))
+    (is (= "19" (get-in res [:headers "content-length"])))
+    (is (= "application/json; charset=utf-8" (get-in res [:headers "content-type"])))
     (is (= "{\"response\":\"hash\"}" (:body res)))
     (is (= 200 (get-in res [:status])))))
 
@@ -69,8 +69,8 @@
                            :content-info " with content info"
                            :widgets {:content 'clojurewerkz.gizmo.responder-test/respond-with-html-content-widget
                                      :header 'clojurewerkz.gizmo.responder-test/respond-with-html-header-widget}})]
-    (is (= "208" (get-in res [:headers "Content-Length"])))
-    (is (= "text/html; charset=utf-8" (get-in res [:headers "Content-Type"])))
+    (is (= "208" (get-in res [:headers "content-length"])))
+    (is (= "text/html; charset=utf-8" (get-in res [:headers "content-type"])))
     (is (= "<!DOCTYPE html>
 <html lang=\"en\">
   <head>
