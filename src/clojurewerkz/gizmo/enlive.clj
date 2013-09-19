@@ -22,15 +22,6 @@
     (apply conj parent children)
     (apply conj [parent] children)))
 
-(defn has-attr
-  "Predicare function that fetches only the elements that have certain attribute, for example:
-
-      (has-attr :id)
-
-   Will only return elements that have an `id` attribute"
-  [attr]
-  (html/pred #(not (nil? (-> % :attrs attr)))))
-
 (defn snip
   "Predicate function to retrieve all snippets from the view"
   [snippet-name]
@@ -59,7 +50,7 @@
    for example, if you have `<div snippet='main_content'></div>`, you'll have main_content*
    selector available within the scope of snippet definition."
  [name source selector args & forms]
- (let [snippets (html/select (html/html-resource source) [(has-attr :snippet)])
+ (let [snippets (html/select (html/html-resource source) [(html/attr? :snippet)])
        names    (apply concat (map #(vector
                                      (-> % :attrs :snippet format-selector symbol)
                                      (list 'clojurewerkz.gizmo.enlive/snip (-> % :attrs :snippet))) snippets))]
