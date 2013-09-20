@@ -48,6 +48,12 @@
   [handler]
   (fn [env]
     (let [handler-env  (handler env)
-          complete-env (hash-utils/deep-merge env handler-env)]
-      (println "Handling uri: " (:uri env) " Rendering: " (:render complete-env))
-      (respond-with complete-env))))
+          complete-env (hash-utils/deep-merge env handler-env)
+          render (:render complete-env)]
+      (if render
+        (do
+          (println "Handling uri: " (:uri env) " Rendering: " (:render complete-env))
+          (respond-with complete-env))
+        (do
+          (println "Handling uri: " (:uri env) " :render not set, rendering skipped.")
+          handler-env)))))
