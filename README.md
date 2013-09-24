@@ -40,14 +40,14 @@ any point without prior notice.
 
 With Leiningen:
 
-    [clojurewerkz/gizmo "1.0.0-alpha1"]
+    [clojurewerkz/gizmo "1.0.0-alpha2"]
 
 With Maven:
 
     <dependency>
       <groupId>clojurewerkz</groupId>
       <artifactId>eep</artifactId>
-      <version>1.0.0-alpha1</version>
+      <version>1.0.0-alpha2</version>
     </dependency>
 
 ## Documentation
@@ -97,8 +97,7 @@ the middleware stack and request handler.
 middleware, handler and renderer and is ready to be returned back to
 the client.
 
-With this separation, you can refer to a
-specific part of request processing pipeline.
+With this separation, you can refer to a specific part of request processing pipeline.
 
 In all parts of your application, you can always refer to current (immutable)
 state of request by calling `clojurewerkz.gizmo.request/request` function.
