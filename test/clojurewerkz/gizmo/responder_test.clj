@@ -52,12 +52,18 @@
                    {:response-hash {:response :hash}
                     :status 201
                     :render :json}))
+        plain-ring-response {:status 404
+                             :body "Not found."}
+        plain-ring-handler (wrap-responder
+                            (fn [e] plain-ring-response))
         res     (handler {:env :env})]
     (testing "Handler receives env from middleware"
       (is (= {:env :env} @env)))
     (testing "Response depends on outcome of handler"
       (is (= 201 (:status res)))
-      (is (= "{\"response\":\"hash\"}" (:body res))))))
+      (is (= "{\"response\":\"hash\"}" (:body res))))
+    (testing "Handler responses without :render key are returned directly"
+      (is (= plain-ring-response (plain-ring-handler nil))))))
 
 (deftest respond-with-html-with-request
   (deflayout respond-with-html-layout "templates/layouts/application.html" [])
