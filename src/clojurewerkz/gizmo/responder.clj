@@ -33,10 +33,11 @@
                           (get (widget/all-layouts) layout)
                           (last (first (widget/all-layouts))))
         response        (request/with-request env
-                          (-> (layout-template)
-                              (widget/inject-core-widgets (:widgets env))
-                              (widget/interpolate-widgets env)
-                              widget/render*))]
+                          (widget/with-trace
+                            (-> (layout-template)
+                                (widget/inject-core-widgets (:widgets env))
+                                (widget/interpolate-widgets env)
+                                widget/render*)))]
     {:headers (merge headers
                      {"content-type"  "text/html; charset=utf-8"
                       "content-length" (str (count response))})
