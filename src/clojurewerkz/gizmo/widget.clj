@@ -1,6 +1,7 @@
 (ns clojurewerkz.gizmo.widget
   "Main namespace for working with Widgets - small, atomic, reusable parts of the page."
   (:require [net.cgrand.enlive-html :as html]
+            [clojure.pprint :refer [pprint]]
             [clojure.core.reducers :as r]
             [clojure.string :as str]
             [net.cgrand.xml :as xml]
@@ -120,3 +121,43 @@
        (filter #(:layout (meta %)))
        (map #(vector (keyword (:name (meta %))) (var-get %)))
        (into {})))
+
+;;
+;; Trace
+;;
+
+(def ^:dynamic *trace*)
+
+(defmacro with-trace
+  [& body]
+  `(binding [*trace* (atom [])]
+     ~@body))
+
+(defn pprint-to-str
+  [m]
+  (let [w (java.io.StringWriter.)]
+    (pprint m w)
+    (.toString w)))
+
+(defwidget trace-widget
+  :view (fn [_]
+          (lazy-seq
+           (html/html [:div {:class "trace-widget"}
+                       [:div {:class "trace-btn" }
+                        "Traces >>"]
+                       [:div {:class "trace-wrapper" }
+                        (if (empty? @*trace*)
+                          "No traces available, you can use `clojurewerkz.gizmo.widget/trace` to add traces here."
+                          [:ul
+                           (for [[loc trace] @*trace*]
+                             [:li
+                              [:b loc]
+                              [:pre [:code (pprint-to-str trace)]]])])]]))))
+
+(defmacro trace
+  [x]
+  (let [line (:line (meta &form))
+        file *file*]
+    `(let [x# ~x]
+       (swap! *trace* conj [(format "(%s:%s)" ~file ~line) x#])
+       x#)))
