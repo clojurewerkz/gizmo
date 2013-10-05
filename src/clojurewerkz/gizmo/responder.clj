@@ -5,17 +5,26 @@
             [clojurewerkz.gizmo.request :as request]
             [clojurewerkz.gizmo.utils.hash-utils :as hash-utils]
 
+            [ring.util.response :as ring-response]
+            [clojure.java.io :as io]
             [cheshire.core :as json]
             [net.cgrand.enlive-html :as html]))
 
 (defmulti respond-with (fn [response]
                          (assert (map? response)
                                  "Can't render response since it's not map. Please use handler returns in form of {:render :html ... }.")
-                         (or (:render response) :json)))
+                         (cond
+                          (:render response) (:render response)
+                          (:body response) :body
+                          :else :html)))
 
 (defmethod respond-with :nothing
   [env]
   {:body ""})
+
+(defmethod respond-with :body
+  [env]
+  env)
 
 (defmethod respond-with :json
   [env]
@@ -25,6 +34,12 @@
                       "content-length" (str (count response))})
      :status (or (:status env) 200)
      :body response}))
+
+(defmethod respond-with :resource
+  [{:keys [path]}]
+  (assert path "With responding with resource, `path` key is mandatory.")
+  (if-let [resource (io/resource path)]
+    (ring-response/url-response resource)))
 
 (defmethod respond-with :html
   [{:keys [widgets status headers layout] :as env}]
@@ -50,5 +65,4 @@
   (fn [env]
     (let [handler-env  (handler env)
           complete-env (hash-utils/deep-merge env handler-env)]
-      (println "Handling uri: " (:uri env) " Rendering: " (:render complete-env))
       (respond-with complete-env))))
