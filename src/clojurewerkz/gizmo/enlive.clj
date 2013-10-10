@@ -1,6 +1,8 @@
 (ns clojurewerkz.gizmo.enlive
   "Enlive helper functions and extensions"
-  (:require [net.cgrand.enlive-html :as html]))
+  (:require [net.cgrand.enlive-html :as html]
+            [net.cgrand.xml :as xml]
+            [clojure.string :as s]))
 
 (defn- format-selector
   [name]
@@ -56,3 +58,18 @@
                                      (list 'clojurewerkz.gizmo.enlive/snip (-> % :attrs :snippet))) snippets))]
    `(let* [~@names]
           (def ~name (html/snippet ~source ~selector ~args ~@forms)))))
+
+(defn replace-vars
+  "Version of Enlive replace-vars that doesn't set your hair on fire (doesn't throw undebuggable exceptions, at very least)."
+  ([m] (replace-vars #"\$\{\s*([^}]*[^\s}])\s*}" m))
+  ([re m] (replace-vars re m keyword))
+  ([re m f]
+     (let [replacement (fn [[_ r]] (str (get m (f r))))
+           substitute-vars #(s/replace % re replacement)]
+       (fn [node]
+         (cond
+          (string? node) (substitute-vars node)
+          (xml/tag? node) (assoc node :attrs
+                                 (into {} (for [[k v] (:attrs node)]
+                                            [k (substitute-vars v)])))
+          :else node)))))
