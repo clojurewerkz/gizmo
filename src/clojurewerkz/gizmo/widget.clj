@@ -140,15 +140,19 @@
     (.toString w)))
 
 (defwidget trace-widget
-  :view (fn [traces]
-          (html/html [:div {:class "trace-widget"}
-                      [:ul
-                       (for [[loc trace] traces]
-                         [:li
-                          [:h3 loc]
-                          [:pre [:code (pprint-to-str trace)]]])]]))
-  :fetch (fn [_]
-           @*trace*))
+  :view (fn [_]
+          (lazy-seq
+           (html/html [:div {:class "trace-widget"}
+                       [:div {:class "trace-btn" }
+                        "Traces >>"]
+                       [:div {:class "trace-wrapper" }
+                        (if (empty? @*trace*)
+                          "No traces available, you can use `clojurewerkz.gizmo.widget/trace` to add traces here."
+                          [:ul
+                           (for [[loc trace] @*trace*]
+                             [:li
+                              [:b loc]
+                              [:pre [:code (pprint-to-str trace)]]])])]]))))
 
 (defmacro trace
   [x]
