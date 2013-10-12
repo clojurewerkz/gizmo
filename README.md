@@ -1,16 +1,16 @@
-# What is Gizmo
+# What is Gizmo?
 
 Gizmo is an effortless way to create web applications in Clojure.
 
 Gizmo is a set of practices we've accumulated from several Web
-applications and API's developed with Clojure. It's a MVC
-microframework, which lets you develop parts of your app in completely
-independently, which improves composition and allows you effortlessly
-implement things like A/B testing, gradual feature rollouts.
+applications and APIs developed with Clojure. It's an MVC
+microframework, which lets you develop parts of your app completely
+independently, which improves composition and allows you to effortlessly
+implement things like A/B testing and gradual feature rollouts.
 
-Gizmo uses Enlive under the hood, so you will be able to let your front-end team to
-work on HTML, CSS and JavaScript without interferring with Web development team, but
-also provides means for making sure their accidental changes (e.g. moved or deleted
+Gizmo uses Enlive under the hood, so you will be able to let your front-end team
+work on HTML, CSS and JavaScript without interfering with your server development team,
+but also provides means for making sure their accidental changes (e.g. moved or deleted
 HTML entries) do not break application code.
 
 ## Project Goals
@@ -18,8 +18,8 @@ HTML entries) do not break application code.
 Gizmo is not a replacement for Ring or Compojure. It's based on them, and doesn't
 re-implement their features.
 
-  * Provide a convenient, idiomatic way of develoing Clojure Web apps
-  * Give you set of building blocks to bring you up to speed as fast as possible
+  * Provide a convenient, idiomatic way of developing Clojure web apps
+  * Give you a set of building blocks to bring you up to speed as fast as possible
   * Leave infinite flexibility in terms of all configuration and composition
     decisions
   * Help you to establish reasonable convention on where to put what (handlers,
@@ -56,7 +56,7 @@ With Maven:
 
 Gizmo is a collection of good practices that ties multiple Clojure Web
 development libraries and a few concepts together (similar to
-DropWizard in Java, although slighly more opinionated).
+DropWizard in Java, although slightly more opinionated).
 
 With Gizmo, you build HTTP apps as one or more *services*, each of which can
 be started, stopped and performed a health check on. Request handling
@@ -75,22 +75,23 @@ request hash hands it over to the routing function, which figures out
 which handler the request should be routed to.
 
 Handler prepares the response and returns HTTP response code, response
-body and content type and hands it over to responder. Depending on
+body and content type, and hands this hash over to responder. Depending on
 response content type, an appropriate renderer is invoked (for
-exmaple, HTML or JSON).
+exmaple HTML or JSON).
 
-Rendrerer renders a complete response body and returns the result
+Renderer renders a complete response body and returns the result
 back to Jetty, which sends it back to the client.
 
 ### Request, Response and Environment
 
 Even though Request, Response and Environment are closely related to each other,
-Gizmo separates these concepts.
+Gizmo separates these concepts. These (plus middleware) concepts are taken directly
+from [Ring](https://github.com/ring-clojure/ring).
 
 `request` is an initial request from a HTTP client,
 which contains information about the referrer, user agent, path and so on.
 
-`environment` is request that has been processed and refined by
+`environment` is a request that has been processed and refined by
 the middleware stack and request handler.
 
 `environment` becomes `response` after it has been through the
@@ -178,7 +179,7 @@ and generation in [Route One](https://github.com/clojurewerkz/route-one).
 
 ### Handlers
 
-A handler is a function reponsible for requests matching a particular
+A handler is a function responsible for requests matching a particular
 URL pattern. Handler take an *environment*, a request that's been
 processed by middleware stack, and returns a hash that's passed to
 a responder.
@@ -199,7 +200,7 @@ type of your response, set `:render` key to either `"html"` or `"json"`
 ;; Render HTML response with `index-content` widget as main content
 (defn index-html
   [env]
-  {:render :json
+  {:render :html
    :status 200
    :widgets {:main-content gizmo-cloc.widgets.home/index-content}))
 ```
@@ -212,7 +213,7 @@ to build modular Web applications.
 
 ### Responders
 
-In order to implement a custom, use multimethods extending `respond-with`. For example,
+In order to implement a custom response MIME type, use multimethods extending `respond-with`. For example,
 if you want to add an XML responder, you can write:
 
 ```clj
@@ -227,7 +228,7 @@ if you want to add an XML responder, you can write:
 
 ### Layouts
 
-Layout is a outlining template that's shared between several pages on your
+Layout is an outlining template that's shared between several pages on your
 website. Usually it's a set of common surroundings of an HTML page.
 
 ```clj
@@ -299,16 +300,16 @@ caching off, too.
             :docs         (entities/docs library-name namespace)}))
 ```
 
-Here, a hash from `my-handler` is passed straight to `fetch` function of the widget,
-and it's performing a query to retrieve all docstrings for namespace of a library.
+Here, Gizmo passes a hash from `my-handler` straight to the `fetch` function of the `library-namespace-docs` widget,
+which performs a query to retrieve all docstrings for namespace of a library (the call to `entieies/docs`).
 Once again, `fetch` operations of widgets that are found on the page are done
-in parallel. It does not apply to nested widgets, since in that case parent widget
-should be rendered first, but after parent widget is rendered, it's nested widgets
+in parallel. This does not immediatly apply to nested widgets:, in these cases the parent widget
+will be rendered first, and after parent widget is rendered it's nested widgets
 will be also fetched and rendered in parallel.
 
 ### Snippets
 
-A snippet is the `view` part of a widget, or a part of HTML code that should be rendered
+A snippet is the `view` part of a widget, or a piece of HTML code that should be rendered
 within some other snippet.
 
 For example, here's an HTML snippet for rendering a list of libraries in your
@@ -326,14 +327,13 @@ classpath:
 ```
 
 `snippet` html attribute generates a selector that can be referenced within `defsnippet`.
-For example for `libraries-snippet`, `*libraries-snippet` selector is created.
+For example for `libraries-snippet`, the `*libraries-snippet` selector is created.
 
-This is helpful due to many reasons:
+This is helpful for many reasons:
 
-  * CSS selectors and IDs are flawed, they're changed frequently and required for other
-    parts of application (front-end, specifically) to function correctly. You don't want
-    to change your application code every time someone changes CSS class, ID or even
-    tag of an element.
+  * CSS selectors and IDs are flawed as identifiers between front-end and server-side as they're changed frequently and
+    are required for other parts of application (front-end, specifically) to function correctly. You don't want
+    to change your application code every time someone changes CSS class, ID or even tag of an element.
   * Since templates are loaded during macro expansion, you can catch errors and
     incompatibilities between HTML and application code during compilation time. If
     there was an element with `snippet` attribute is removed, it's `*` selector is
@@ -342,7 +342,7 @@ This is helpful due to many reasons:
     to specify their location. You add `snippet` HTML attribute once, reference it
     within `defsnippet`, and you're good to go, no additional effort involved.
 
-Now, let's create a snippet that will actually render libraries from your classpath
+Here is a snippet that will actually render libraries from your classpath
 to HTML:
 
 ```clj
@@ -365,19 +365,19 @@ libraries and create a `libraries-list-item` for each one of them.
 
 ### Services
 
-Services are used to give you flexibility of creating a long-running processes within your
+Services are used to give you the flexibility of creating a long-running processes within your
 application. Typical examples are `jetty` webserver and `nrepl` server that are used in
 nearly all Clojure apps.
 
 To create a service, you have to give it `start`, `stop`, `alive` and config functions.
 
-  * `config` is a function that returnc configuration for a service or hardcoded configuration
-    value.
-  * `start` is called in a separate thread, and is responsible for service startup.
+  * `config` is a function that returns configuration for a service or a hardcoded configuration
+    value
+  * `start` is called in a separate thread, and is responsible for service startup
   * `alive` is used to check wether service is still alive
   * `stop` is responsible for stopping the service
 
-For example, here's a service that manages `jetty` server:
+For example, here's a service that manages a `jetty` server:
 
 ```clj
 (ns gizmo-cloc.services.jetty
@@ -409,11 +409,11 @@ You can start it with
 ```
 
 You can check [nrepl service example here](https://github.com/clojurewerkz/gizmo/blob/master/examples/services/nrepl_service.clj)
-and more complex example of cooperative [UDP socket listener here](https://github.com/clojurewerkz/gizmo/blob/master/examples/services/udp_service.clj).
+and a more complex example of cooperative [UDP socket listener here](https://github.com/clojurewerkz/gizmo/blob/master/examples/services/udp_service.clj).
 
 ### Configuration
 
-Configuration file is loaded by `clojurewerkz.gizmo.config/load-config!`, which receives
+Configuration is a file loaded by `clojurewerkz.gizmo.config/load-config!`, which takes
 a path to configuration file and loads it to `clojurewerkz.gizmo.config/settings` variable,
 that's available at all times.
 
@@ -431,7 +431,7 @@ lein run --config config/development.clj
 
 ### Example applications
 
-Reference applicaiton that demonstrates core priniples of web development with Gizmo can be found
+Reference application that demonstrates core principles of web development with Gizmo can be found
 [here](https://github.com/ifesdjeen/gizmo-cloc).
 
 
