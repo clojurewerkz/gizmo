@@ -59,12 +59,31 @@
    `(let* [~@names]
           (def ~name (html/snippet ~source ~selector ~args ~@forms)))))
 
+(defprotocol ToString
+  (to-string [this]))
+
+(extend-protocol ToString
+  clojure.lang.Keyword
+  (to-string [kwd]
+    (name kwd))
+
+  String
+  (to-string [s]
+    s)
+
+  clojure.lang.Symbol
+  (to-string [sym]
+    (name sym))
+
+  nil
+  (to-string [_] ""))
+
 (defn replace-vars
   "Version of Enlive replace-vars that doesn't set your hair on fire (doesn't throw undebuggable exceptions, at very least)."
   ([m] (replace-vars #"\$\{\s*([^}]*[^\s}])\s*}" m))
   ([re m] (replace-vars re m keyword))
   ([re m f]
-     (let [replacement (fn [[_ r]] (str (get m (f r))))
+     (let [replacement (fn [[_ r]] (to-string (get m (f r))))
            substitute-vars #(s/replace % re replacement)]
        (fn [node]
          (cond
