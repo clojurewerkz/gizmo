@@ -12,7 +12,9 @@
                  [ring/ring-devel "1.2.0"]
                  [compojure "1.1.5"]
 
-                 [bultitude "0.2.2"]]
+                 [bultitude "0.2.2"]
+
+                 [com.taoensso/timbre "2.6.3"]]
 
   :source-paths ["src"]
   :profiles       {:dev {:resource-paths ["test/resources"]}})
