@@ -15,7 +15,7 @@
   (let [res (atom nil)]
     (defservice defservice-test-2
       :config nil
-      :start (fn [_] (throw (Exception. "couldn't start"))))
+      :start (fn [_] ))
     (start! defservice-test-2)
     (Thread/sleep 10)
     (is (not (alive? defservice-test-2)))
