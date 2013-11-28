@@ -13,7 +13,8 @@
                        start
                        (-> env :request-method name s/upper-case)))
       (info (format
-                "Completed in %sms, status: %s\n"
+                "Completed '%s' in %sms, status: %s\n"
+                (:uri env)
                 (- (.getTime (java.util.Date.)) (.getTime start))
                 (:status res)))
       res)))
