@@ -460,7 +460,7 @@ with your changes and all tests pass, submit a pull request on GitHub.
 
 ## License
 
-Copyright © 2013 Oleksandr Petrov (CodeCentric AG), Michael Klishin
+Copyright © 2014 Oleksandr Petrov (CodeCentric AG), Michael Klishin
 
 Double licensed under the Eclipse Public License (the same as Clojure) or
 the Apache Public License 2.0.
