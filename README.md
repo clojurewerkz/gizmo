@@ -464,3 +464,7 @@ Copyright © 2014 Oleksandr Petrov (CodeCentric AG), Michael Klishin
 
 Double licensed under the Eclipse Public License (the same as Clojure) or
 the Apache Public License 2.0.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/clojurewerkz/gizmo/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
