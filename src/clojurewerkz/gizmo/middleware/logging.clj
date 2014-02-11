@@ -8,13 +8,13 @@
     (let [start (java.util.Date.)
           res   (handler env)]
       (info (format "Processing '%s' (for '%s' at %s) [%s]"
-                       (:uri env)
-                       (get-in env [:headers "host"])
-                       start
-                       (-> env :request-method name s/upper-case)))
+                    (:uri env)
+                    (get-in env [:headers "host"])
+                    start
+                    (-> env :request-method name s/upper-case)))
       (info (format
-                "Completed '%s' in %sms, status: %s\n"
-                (:uri env)
-                (- (.getTime (java.util.Date.)) (.getTime start))
-                (:status res)))
+             "Completed '%s' in %sms, status: %s\n"
+             (:uri env)
+             (- (.getTime (java.util.Date.)) (.getTime start))
+             (:status res)))
       res)))

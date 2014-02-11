@@ -1,4 +1,4 @@
-(defproject clojurewerkz/gizmo "1.0.0-alpha3-SNAPSHOT"
+(defproject clojurewerkz/gizmo "1.0.0-alpha4-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
@@ -6,14 +6,14 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [enlive "1.1.4"]
                  [cheshire "5.0.2"]
-                 [clojurewerkz/route-one "1.0.0-rc3"]
-                 [com.taoensso/timbre "2.7.1"]
+                 [clojurewerkz/route-one "1.1.0-SNAPSHOT"]
+                 [com.taoensso/timbre "3.0.1"]
 
-                 [ring/ring "1.2.0"]
-                 [ring/ring-devel "1.2.0"]
-                 [compojure "1.1.5"]
+                 [ring/ring "1.2.1"]
+                 [ring/ring-devel "1.2.1"]
+                 [compojure "1.1.6"]
 
-                 [bultitude "0.2.2"]]
+                 [bultitude "0.2.5"]]
 
   :source-paths ["src"]
   :profiles       {:dev {:resource-paths ["test/resources"]}})
