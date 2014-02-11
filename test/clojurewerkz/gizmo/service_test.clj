@@ -23,12 +23,12 @@
 
 (deftest defservice-is-alive-with-long-running
   (let [res (atom nil)]
-    (defservice defservice-test-2
+    (defservice defservice-test-3
       :config nil
       :start (fn [cfg] (Thread/sleep 100)))
-    (start! defservice-test-2)
+    (start! defservice-test-3)
     (Thread/sleep 10)
-    (is (alive? defservice-test-2))
+    (is (alive? defservice-test-3))
     (is (= nil @res))))
 
 (deftest defservice-stop-test
