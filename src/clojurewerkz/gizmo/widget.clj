@@ -38,10 +38,18 @@
   "Resolves widget based on identifier"
   [s]
   (assert (get-in s [:attrs :rel]) "Can't resolve widget name. If it's an top-level widget, please add {:widgets ...} clause to your responder, otherwise add `rel` attribute to widget for proper resolution.")
+  (let [rel (get-in s [:attrs :rel])]
+    (if-let [widget (try (resolve (symbol rel)) (catch Exception e nil))]
+      widget
+      (if (fn? rel)
+        rel
+        (fn [_] rel)))))
+
+(comment
+
   (if-let [widget (resolve (symbol (get-in s [:attrs :rel])))]
     widget
     (throw (Exception. (str "Can't resolve widget " s ". " (get-in s [:attrs :rel]) " is not found")))))
-
 ;;
 ;; API
 ;;
@@ -92,21 +100,38 @@
                     node))))
    html-source))
 
+(defmacro transform
+  [html-source & body]
+  `(html/flatmap
+    (html/transformation
+     ~@body)
+    ~html-source))
+
+(defn maybe-generate-id
+  [a]
+  (if (nil? a) (gensym) a))
+
+;; Check out if it's possible to cache selectors O_O
+
 ;; TODO Add widget cache for widgets that were already rendered in different context so that they wouldn't be re-rendered
 (defn interpolate-widgets
   "Interpolates widgets from the source code"
   [html-source env]
-  (let [step-widgets (into {}
+  (let [html-source (transform html-source
+                               [:widget] (fn [w]
+                                           (update-in w [:attrs :id] maybe-generate-id)))
+        step-widgets (into {}
                            (filter identity
                                    (pmap (fn [w]
                                            (when-let [widget-fn (resolve-widget w)]
-                                             [widget-fn (widget-fn env)]))
+                                             [(:id w) (widget-fn env)]))
                                          (html/select html-source [:widget]))))]
     (html/flatmap
      (html/transformation
       [:widget] (fn [widget]
                   (let [widget-fn (resolve-widget widget)
-                        view (get step-widgets widget-fn)]
+                        view      (get step-widgets (:id widget))
+                        ]
                     (if (seq? view)
                       (interpolate-widgets view env)
                       view))))

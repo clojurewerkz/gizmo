@@ -63,14 +63,33 @@
     :view (fn [a] a)
     :fetch (fn [s] (str (inc s))))
 
-  (is (= "<div><h1>untouched 2</h1></div>"
-         (render*
-          (interpolate-widgets
-           (inject-core-widgets
-            (html/html-snippet
-             "<div><h1>untouched <widget id=\"first-core-widget\"></widget></h1></div>")
-            {:first-core-widget 'clojurewerkz.gizmo.widget-test/testwidget})
-           1)))))
+  (testing "works with `traditional` widgets"
+    (is (= "<div><h1>untouched 2</h1></div>"
+           (render*
+            (interpolate-widgets
+             (inject-core-widgets
+              (html/html-snippet
+               "<div><h1>untouched <widget id=\"first-core-widget\"></widget></h1></div>")
+              {:first-core-widget 'clojurewerkz.gizmo.widget-test/testwidget})
+             1)))))
+  (testing "works with fixed arguments"
+    (is (= "<div><h1>untouched here we go</h1></div>"
+           (render*
+            (interpolate-widgets
+             (inject-core-widgets
+              (html/html-snippet
+               "<div><h1>untouched <widget id=\"first-core-widget\"></widget></h1></div>")
+              {:first-core-widget "here we go"})
+             1)))))
+  (testing "works with functions"
+    (is (= "<div><h1>untouched 1</h1></div>"
+           (render*
+            (interpolate-widgets
+             (inject-core-widgets
+              (html/html-snippet
+               "<div><h1>untouched <widget id=\"first-core-widget\"></widget></h1></div>")
+              {:first-core-widget (comp identity str)})
+             1))))))
 
 (deftest layout-test
   (deflayout application "templates/layouts/application.html"
