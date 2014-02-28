@@ -205,6 +205,18 @@ type of your response, set `:render` key to either `"html"` or `"json"`
    :widgets {:main-content gizmo-cloc.widgets.home/index-content}))
 ```
 
+You can also use function or literals within `:widgets` clause, such as:
+
+```
+:widgets {:main-content "some content"}
+
+;; Or
+
+:widgets {:main-content (fn [_] "some content") }
+```
+
+That will create a "meta-widget".
+
 JSON rendering in Gizmo is just what you expect it to be: you return a map,
 it is serialized into JSON and returned to Jetty.
 
@@ -467,4 +479,3 @@ the Apache Public License 2.0.
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/clojurewerkz/gizmo/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
