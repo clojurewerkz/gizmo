@@ -124,14 +124,14 @@
                            (filter identity
                                    (pmap (fn [w]
                                            (when-let [widget-fn (resolve-widget w)]
-                                             [(:id w) (widget-fn env)]))
+                                             [(get-in w [:attrs :id]) (widget-fn env)]))
                                          (html/select html-source [:widget]))))]
     (html/flatmap
      (html/transformation
       [:widget] (fn [widget]
                   (let [widget-fn (resolve-widget widget)
-                        view      (get step-widgets (:id widget))
-                        ]
+                        id        (get-in widget [:attrs :id])
+                        view      (get step-widgets id)]
                     (if (seq? view)
                       (interpolate-widgets view env)
                       view))))
