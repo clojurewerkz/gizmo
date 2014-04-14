@@ -2,6 +2,7 @@
 
 Gizmo is an effortless way to create web applications in Clojure.
 
+
 Gizmo is a set of practices we've accumulated from several Web
 applications and APIs developed with Clojure. It's an MVC
 microframework, which lets you develop parts of your app completely

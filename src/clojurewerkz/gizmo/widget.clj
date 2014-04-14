@@ -37,7 +37,7 @@
 (defn- resolve-widget
   "Resolves widget based on identifier"
   [s]
-  (assert (get-in s [:attrs :rel]) "Can't resolve widget name. If it's an top-level widget, please add {:widgets ...} clause to your responder, otherwise add `rel` attribute to widget for proper resolution.")
+  (assert (get-in s [:attrs :rel]) (str "Can't resolve widget name. If it's an top-level widget, please add {:widgets ...} clause to your responder, otherwise add `rel` attribute to widget for proper resolution. Full widget description: " s))
   (let [rel (get-in s [:attrs :rel])]
     (if-let [widget (try (resolve (symbol rel)) (catch Exception e nil))]
       widget
@@ -45,11 +45,6 @@
         rel
         (fn [_] rel)))))
 
-(comment
-
-  (if-let [widget (resolve (symbol (get-in s [:attrs :rel])))]
-    widget
-    (throw (Exception. (str "Can't resolve widget " s ". " (get-in s [:attrs :rel]) " is not found")))))
 ;;
 ;; API
 ;;
@@ -88,18 +83,6 @@
   `(def ~(vary-meta layout-name assoc :layout true :source source)
      (layout* ~source ~args ~@forms)))
 
-(defn inject-core-widgets
-  "Injects core widgets into given layout"
-  [html-source widgets]
-  (html/flatmap
-   (html/transformation
-    [:widget] (fn [node]
-                (let [^symbol widget-id (get-in node [:attrs :id])]
-                  (if-let [rel (get widgets (keyword widget-id))]
-                    (assoc-in node [:attrs :rel] rel)
-                    node))))
-   html-source))
-
 (defmacro transform
   [html-source & body]
   `(html/flatmap
@@ -113,13 +96,26 @@
 
 ;; Check out if it's possible to cache selectors O_O
 
+(defn inject-core-widgets
+  "Injects core widgets into given layout"
+  [html-source widgets]
+  (html/flatmap
+   (html/transformation
+    [:widget] (fn [node]
+                (let [^symbol widget-id (get-in node [:attrs :id])]
+                  (if-let [rel (get widgets (keyword widget-id))]
+                    (assoc-in node [:attrs :rel] rel)
+                    node))))
+   html-source))
+
 ;; TODO Add widget cache for widgets that were already rendered in different context so that they wouldn't be re-rendered
 (defn interpolate-widgets
   "Interpolates widgets from the source code"
   [html-source env]
-  (let [html-source (transform html-source
-                               [:widget] (fn [w]
-                                           (update-in w [:attrs :id] maybe-generate-id)))
+  (let [html-source  (inject-core-widgets html-source (:widgets env))
+        html-source  (transform html-source
+                                [:widget] (fn [w]
+                                            (update-in w [:attrs :id] maybe-generate-id)))
         step-widgets (into {}
                            (filter identity
                                    (pmap (fn [w]
