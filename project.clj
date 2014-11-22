@@ -1,6 +1,6 @@
 (defproject clojurewerkz/gizmo "1.0.0-alpha4"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :description "A Web development toolkit for Clojure"
+  :url "https://github.com/clojurewerkz/gizmo"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
