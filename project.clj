@@ -1,4 +1,4 @@
-(defproject clojurewerkz/gizmo "1.0.0-alpha4"
+(defproject clojurewerkz/gizmo "1.0.0-alpha5-SNAPSHOT"
   :description "A Web development toolkit for Clojure"
   :url "https://github.com/clojurewerkz/gizmo"
   :license {:name "Eclipse Public License"
