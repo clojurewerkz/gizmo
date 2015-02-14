@@ -34,7 +34,7 @@
                       "content-length" (str (count response))})
      :status (or (:status env) 200)
      :body response
-     :cookies (:cookies env)}))
+     :cookies (or (:cookies env) {})}))
 
 (defmethod respond-with :resource
   [{:keys [path]}]
@@ -59,12 +59,11 @@
                       "content-length" (str (count response))})
      :status (or status 200)
      :body response
-     :cookies cookies}))
+     :cookies (or cookies {})}))
 
 (defn wrap-responder
   "Responder middleware, shuold be always inserted as a last middleware after routing/handler."
   [handler]
   (fn [env]
-    (let [handler-env  (handler env)
-          complete-env (hash-utils/deep-merge env handler-env)]
-      (respond-with complete-env))))
+    (let [handler-env  (handler env)]
+      (respond-with handler-env))))
