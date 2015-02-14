@@ -60,11 +60,13 @@
                    {:response-hash {:response :hash}
                     :status 201
                     :render :json}))
-        res     (handler {:env :env})]
+        res     (handler {:env :env
+                          :cookies {:foo "bar"}})]
     (testing "Handler receives env from middleware"
-      (is (= {:env :env} @env)))
+      (is (= {:env :env :cookies {:foo "bar"}} @env)))
     (testing "Response depends on outcome of handler"
       (is (= 201 (:status res)))
+      (is (= {} (:cookies res)))
       (is (= "{\"response\":\"hash\"}" (:body res))))))
 
 (deftest respond-with-html-with-request
