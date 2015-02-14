@@ -96,6 +96,16 @@
 </html>" (:body res)))
     (is (= 200 (get-in res [:status])))))
 
+(deftest respond-with-redirect
+  (let [location "http://example.com"
+        accept "application/json"
+        res (respond-with {:render :redirect
+                           :location location
+                           :headers {"Accept" accept}})]
+    (is (= location (get-in res [:headers "Location"])))
+    (is (= accept (get-in res [:headers "Accept"])))
+    (is (= 302 (:status res)))))
+
 (deftest custom-responder
   (defmethod respond-with :whatev
     [env]

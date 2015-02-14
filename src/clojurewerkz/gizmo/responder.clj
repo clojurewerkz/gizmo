@@ -61,6 +61,16 @@
      :body response
      :cookies (or cookies {})}))
 
+(defmethod respond-with :redirect
+  [env]
+  {:status (or (:status env) 302)
+   :body ""
+   :cookies (or (:cookies env) {})
+   :headers (assoc
+              (or (:headers env) {})
+              "Location"
+              (:location env))})
+
 (defn wrap-responder
   "Responder middleware, shuold be always inserted as a last middleware after routing/handler."
   [handler]
