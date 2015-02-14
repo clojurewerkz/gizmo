@@ -33,7 +33,8 @@
                      {"content-type"  "application/json; charset=utf-8"
                       "content-length" (str (count response))})
      :status (or (:status env) 200)
-     :body response}))
+     :body response
+     :cookies (:cookies env)}))
 
 (defmethod respond-with :resource
   [{:keys [path]}]
@@ -42,7 +43,7 @@
     (ring-response/url-response resource)))
 
 (defmethod respond-with :html
-  [{:keys [widgets status headers layout] :as env}]
+  [{:keys [widgets status headers layout cookies] :as env}]
   (assert (> (count (widget/all-layouts)) 0) "Can't respond with :html without layouts given")
   (let [layout-template (if layout
                           (get (widget/all-layouts) layout)
@@ -57,7 +58,8 @@
                      {"content-type"  "text/html; charset=utf-8"
                       "content-length" (str (count response))})
      :status (or status 200)
-     :body response}))
+     :body response
+     :cookies cookies}))
 
 (defn wrap-responder
   "Responder middleware, shuold be always inserted as a last middleware after routing/handler."
