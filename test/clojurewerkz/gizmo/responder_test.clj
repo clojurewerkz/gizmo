@@ -44,6 +44,14 @@
                            :response-hash {:response :hash}})]
     (is (= 404 (:status res)))))
 
+(deftest respond-with-cookies
+  (let [cookies {"theCookie" {}}
+        res (respond-with {:render :json
+                           :status 404
+                           :response-hash {:response :hash}
+                           :cookies cookies})]
+    (is (= cookies (:cookies res)))))
+
 (deftest wrap-responder-test
   (let [env     (atom nil)
         handler (wrap-responder
