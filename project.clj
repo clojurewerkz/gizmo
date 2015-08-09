@@ -10,7 +10,8 @@
                  [ring/ring                  "1.4.0"]
                  [ring/ring-devel            "1.4.0"]
                  [compojure                  "1.4.0"]
-                 [org.clojure/tools.logging  "0.3.1"]]
+                 [org.clojure/tools.logging  "0.3.1"]
+                 [bultitude                  "0.2.8"]]
 
   :source-paths ["src"]
   :profiles       {:dev {:resource-paths ["test/resources"]}})
