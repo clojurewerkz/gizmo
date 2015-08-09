@@ -34,6 +34,25 @@
      :body response
      :cookies (or (:cookies env) {})}))
 
+(defmethod respond-with :static-html
+  [env]
+  (if (:file env)
+    (let [response (slurp (:file env))]
+      {:headers (merge (:headers env)
+                       {"content-type"  "text/html; charset=utf-8"
+                        "content-length" (str (count response))})
+       :status (or (:status env) 200)
+       :body response
+       :cookies (or (:cookies env) {})})
+    (let [response "Can't serve the requested file"]
+      {:headers (merge (:headers env)
+                       {"content-type"  "text/html; charset=utf-8"
+                        "content-length" (str (count response))})
+       :status  500
+       :body    response
+       :cookies (or (:cookies env) {})})
+    ))
+
 (defmethod respond-with :resource
   [{:keys [path]}]
   (assert path "With responding with resource, `path` key is mandatory.")
