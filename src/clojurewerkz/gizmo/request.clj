@@ -1,6 +1,5 @@
 (ns clojurewerkz.gizmo.request
-  "Request helpers, makes `request` environment globally available during the call"
-  (:require [net.cgrand.enlive-html :as html]))
+  "Request helpers, makes `request` environment globally available during the call")
 
 (declare ^{:dynamic true} *request*)
 
@@ -14,7 +13,7 @@
 
 (defn xhr?
   ([]
-     (xhr? (request)))
+   (xhr? (request)))
   ([request]
-     (= "XMLHttpRequest"
-        (get-in request [:headers "x-requested-with"]))))
+   (= "XMLHttpRequest"
+      (get-in request [:headers "x-requested-with"]))))
