@@ -258,7 +258,7 @@ with your changes and all tests pass, submit a pull request on GitHub.
 
 ## License
 
-Copyright © 2014-2015 Alex Petrov, Michael Klishin
+Copyright © 2014-2016 Alex Petrov, Michael Klishin
 
 Double licensed under the Eclipse Public License (the same as Clojure) or
 the Apache Public License 2.0.
